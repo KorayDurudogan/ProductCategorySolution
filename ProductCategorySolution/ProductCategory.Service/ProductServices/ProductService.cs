@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProductCategory.Infrastructure.DAOs;
 using ProductCategory.Infrastructure.Models;
+using ProductCategory.Infrastructure.Redis;
 using ProductCategory.Service.CategoryServices;
 using ProductCategory.Service.Extensions;
 using ProductCategory.Service.Models;
@@ -19,11 +20,14 @@ namespace ProductCategory.Service.ProductServices
 
         private readonly ICategoryService _categoryService;
 
-        public ProductService(IDataDao<Product> dataDao, IMapper mapper, ICategoryService categoryService)
+        private readonly IRedisManager _redisManager;
+
+        public ProductService(IDataDao<Product> dataDao, IMapper mapper, ICategoryService categoryService, IRedisManager redisManager)
         {
             _dataDao = dataDao;
             _mapper = mapper;
             _categoryService = categoryService;
+            _redisManager = redisManager;
         }
 
         public async Task DeleteAsync(string id)
@@ -36,14 +40,26 @@ namespace ProductCategory.Service.ProductServices
 
         public async Task<ProductResponseDto> GetAsync(string id)
         {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentNullException();
+            string redisKey = $"product-{id}";
 
-            var product = await _dataDao.GetAsync(id);
-            var productResponseDto = _mapper.Map<ProductResponseDto>(product);
+            var productFromCache = _redisManager.Get<ProductResponseDto>(redisKey);
+            if (productFromCache != null)
+            {
+                return productFromCache;
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    throw new ArgumentNullException();
 
-            productResponseDto.CategoryId = await _categoryService.GetAsync(product.CategoryId);
-            return productResponseDto;
+                var product = await _dataDao.GetAsync(id);
+                var productResponseDto = _mapper.Map<ProductResponseDto>(product);
+
+                productResponseDto.CategoryId = await _categoryService.GetAsync(product.CategoryId);
+
+                _redisManager.Add(redisKey, productResponseDto, new TimeSpan(0, 5, 0));
+                return productResponseDto;
+            }
         }
 
         public async Task InsertAsync(ProductRequestDto productDto)

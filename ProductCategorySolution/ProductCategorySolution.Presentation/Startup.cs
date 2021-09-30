@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using ProductCategory.Infrastructure.DAOs;
 using ProductCategory.Infrastructure.Models;
+using ProductCategory.Infrastructure.Redis;
 using ProductCategory.Service.CategoryServices;
 using ProductCategory.Service.ProductServices;
 using ProductCategory.Service.Profiles;
@@ -42,10 +43,12 @@ namespace ProductCategorySolution
             services.AddAutoMapper(typeof(ProductCategoryProfile));
 
             services.AddSingleton<IMongoClient, MongoClient>(sp => new MongoClient(Configuration.GetConnectionString("MongoDb")));
+
+            services.AddSingleton<IRedisManager, RedisManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRedisManager redisManager)
         {
             if (env.IsDevelopment())
             {
@@ -53,6 +56,8 @@ namespace ProductCategorySolution
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductCategorySolution v1"));
             }
+
+            redisManager.Connect();
 
             app.UseHttpsRedirection();
 
