@@ -1,9 +1,10 @@
 # ProductCategorySolution 🎉
 
-ProductCategorySolution contains three projects 🏗️
-* Infrastructure -> Contains models about connection database, cache etc. If we had RabbitMQ, Kafka or other third party app integrations, this project would be the place.
-* Service -> Contains business models where presentation and infrastructure projects meet. This layer consumes all resources from Infrastructure.
-* Presentation -> Contains endpoint where users connect the application. Also holds sensitive configurations of the application.
+ProductCategorySolution contains four projects 🏗️
+* **Infrastructure** -> Contains models about connection database, cache etc. If we had RabbitMQ, Kafka or other third party app integrations, this project would be the place.
+* **Service** -> Contains business models where presentation and infrastructure projects meet. This layer consumes all resources from Infrastructure.
+* **Presentation** -> Contains endpoint where users connect the application. Also holds sensitive configurations of the application.
+* **ProductCategoryTests** -> Project that contains unit tests. xUnit has been used.
 
 Some features of the solution ✨
 
@@ -14,6 +15,7 @@ Some features of the solution ✨
 * API has JWT authentication.
 * API using a middleware for exception handling.
 * Project using SeriLog for logging.
+* Solution contains unit tests.
 
 How to Run 🚀
 
@@ -22,10 +24,6 @@ How to Run 🚀
 * Call _token/get-token_ by swagger. Password is **2021Hepsiexpress2021** You should use this jwt token for all other endpoints. If you want to disable token feature, you can simply remove 'Authorize' attribute class from HepsiController. HepsiController is the base controller for all other controllers.
 * Now you are ready to create/fetch/filter/update/delete all product and category data.
 * You can get errors via bad parameters on purpose and check the error logs under Presentation/Logs/log.txt.
-
-What am I going to do next ? 🚧
-
-* I am going to create an unit test project.
 
 ## Diagrams 📸
 
