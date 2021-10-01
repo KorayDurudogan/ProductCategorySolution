@@ -19,7 +19,7 @@ How to Run 🚀
 
 * Run MongoDB and Redis at your local. Assign their connection strings and endpoints under Presentation/appsetings.json.
 * Run the project. See if everything is clear by checking _/hc_ endpoint.
-* Call _token/get-token_ by swagger. You should use this jwt token for all other endpoints. If you want to disable token feature, you can simply remove 'Authorize' attribute class from HepsiController. HepsiController is the base controller for all other controllers.
+* Call _token/get-token_ by swagger. Password is **2021Hepsiexpress2021** You should use this jwt token for all other endpoints. If you want to disable token feature, you can simply remove 'Authorize' attribute class from HepsiController. HepsiController is the base controller for all other controllers.
 * Now you are ready to create/fetch/filter/update/delete all product and category data.
 * You can get errors via bad parameters on purpose and check the error logs under Presentation/Logs/log.txt.
 
