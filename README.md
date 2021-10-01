@@ -7,16 +7,24 @@ ProductCategorySolution contains three projects 🏗️
 
 Some features of the solution ✨
 
-* Project uses MongoDB as database. (You can configure your MongoDB connection string in appsettings.json under Presentation.csproj)
-* Project uses Redis for caching. (You can configure your Redis endpoint in appsettings.json under Presentation.csproj)
-* Healthcheck of system can be accessed with _/hc_ path.
+* Project uses MongoDB as database.
+* Project uses Redis for caching.
+* Project has healthcheck feature.
 * API has swagger documentation.
+* API has JWT authentication.
+* API using a middleware for exception handling.
+* Project using SeriLog for logging.
+
+How to Run 🚀
+
+* Run MongoDB and Redis at your local. Assign their connection strings and endpoints under Presentation/appsetings.json.
+* Run the project. See if everything is clear by checking _/hc_ endpoint.
+* Call _token/get-token_ by swagger. You should use this jwt token for all other endpoints. If you want to disable token feature, you can simply remove 'Authorize' attribute class from HepsiController. HepsiController is the base controller for all other controllers.
+* Now you are ready to create/fetch/filter/update/delete all product and category data.
+* You can get errors via bad parameters on purpose and check the error logs under Presentation/Logs/log.txt.
 
 What am I going to do next ? 🚧
 
-* I am going to add JWT authentication to API.
-* I am gonna add an exception middleware to system.
-* I am going to record exception logs in a text file.
 * I am going to create an unit test project.
 
 ## Diagrams 📸
