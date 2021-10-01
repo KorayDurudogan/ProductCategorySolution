@@ -26,5 +26,14 @@ How to Run 🚀
 * You can get errors via bad parameters on purpose and check the error logs under Presentation/Logs/log.txt.
 
 ## Diagrams 📸
+_Desing of Solution_
 
 ![Screenshot_2](https://user-images.githubusercontent.com/47561392/135548140-62e9c222-01db-421f-a084-24988144b828.png)
+
+## What could be better ? 💡
+* Encrypting and decrypting productId and categoryId in GET requests would be better since they would be considered as sensitive data.
+* A message queue system for POST request could be used. An orchestrator application would adress requests to right queues. I am limiting this design with only POST calls, since GET expects a model right away and also PUT, DELETE are not suitable for working eventually consistent in Product/Category domain. A price change or removing a product are real-time events and can't wait to be consumed in a queue.
+
+_Diagram of EventBus Design_
+
+![MessageQueue](https://user-images.githubusercontent.com/47561392/135656897-01fb181f-f96b-4320-905b-032cfb2f58ac.png)
