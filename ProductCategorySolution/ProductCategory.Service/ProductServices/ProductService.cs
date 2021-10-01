@@ -91,7 +91,7 @@ namespace ProductCategory.Service.ProductServices
             return await AddCategoriesOfProducts(products);
         }
 
-        public async Task<IEnumerable<ProductResponseDto>> GetAll()
+        public async Task<IEnumerable<ProductResponseDto>> GetAllAsync()
         {
             var products = await _dataDao.GetAllAsync();
             return await AddCategoriesOfProducts(products);

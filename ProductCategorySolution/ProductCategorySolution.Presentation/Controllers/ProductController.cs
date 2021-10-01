@@ -14,7 +14,7 @@ namespace ProductCategorySolution.Controllers
         public ProductController(IProductService productService) => _productService = productService;
 
         [HttpGet, Route("all")]
-        public async Task<IEnumerable<ProductRequestDto>> Get() => await _productService.GetAll();
+        public async Task<IEnumerable<ProductRequestDto>> Get() => await _productService.GetAllAsync();
 
         [HttpGet]
         public async Task<ProductRequestDto> Get(string id) => await _productService.GetAsync(id);

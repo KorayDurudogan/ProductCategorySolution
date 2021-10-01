@@ -14,7 +14,7 @@ namespace ProductCategorySolution.Presentation.Controllers
         public CategoryController(ICategoryService categoryService) => _categoryService = categoryService;
 
         [HttpGet, Route("all")]
-        public async Task<IEnumerable<CategoryResponseDto>> Get() => await _categoryService.GetAll();
+        public async Task<IEnumerable<CategoryResponseDto>> Get() => await _categoryService.GetAllAsync();
 
         [HttpGet]
         public async Task<CategoryResponseDto> Get(string id) => await _categoryService.GetAsync(id);

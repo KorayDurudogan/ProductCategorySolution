@@ -19,6 +19,6 @@ namespace ProductCategory.Services.ProductServices
 
         Task<IEnumerable<ProductResponseDto>> FilterAsync(string name = null, string category = null);
 
-        Task<IEnumerable<ProductResponseDto>> GetAll();
+        Task<IEnumerable<ProductResponseDto>> GetAllAsync();
     }
 }

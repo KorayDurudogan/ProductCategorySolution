@@ -48,7 +48,7 @@ namespace ProductCategory.Service.CategoryServices
 
         public async Task UpdateAsync(string id, CategoryRequestDto categoryDto)
         {
-            if (string.IsNullOrWhiteSpace(categoryDto?.Name))
+            if (string.IsNullOrWhiteSpace(categoryDto?.Name) || string.IsNullOrWhiteSpace(id))
                 throw new ArgumentNullException();
 
             var category = _mapper.Map<Category>(categoryDto);
@@ -64,7 +64,7 @@ namespace ProductCategory.Service.CategoryServices
             return _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
         }
 
-        public async Task<IEnumerable<CategoryResponseDto>> GetAll()
+        public async Task<IEnumerable<CategoryResponseDto>> GetAllAsync()
         {
             var categories = await _dataDao.GetAllAsync();
             return _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
