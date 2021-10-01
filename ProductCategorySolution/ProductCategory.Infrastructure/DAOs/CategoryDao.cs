@@ -30,7 +30,7 @@ namespace ProductCategory.Infrastructure.DAOs
             return await _categories.Find(filter).ToListAsync();
         }
 
-        public async Task<IEnumerable<Category>> GetAll() => await _categories.Find(_ => true).ToListAsync();
+        public async Task<IEnumerable<Category>> GetAllAsync() => await _categories.Find(_ => true).ToListAsync();
 
         public async Task<Category> GetAsync(string id)
         {

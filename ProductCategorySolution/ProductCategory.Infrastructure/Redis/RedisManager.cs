@@ -8,7 +8,9 @@ namespace ProductCategory.Infrastructure.Redis
     public class RedisManager : IRedisManager
     {
         ConnectionMultiplexer connectionMultiplexer;
-
+        
+        private IDatabase Db { get => connectionMultiplexer.GetDatabase(1); }
+        
         private readonly string redisEndpoint;
 
         public RedisManager(IConfiguration configuration) => redisEndpoint = configuration.GetSection("Endpoints:Redis").Value;
@@ -31,7 +33,5 @@ namespace ProductCategory.Infrastructure.Redis
             string jsonValue = Db.StringGet(key);
             return jsonValue == null ? default(T) : JsonConvert.DeserializeObject<T>(jsonValue);
         }
-
-        private IDatabase Db { get => connectionMultiplexer.GetDatabase(1); }
     }
 }

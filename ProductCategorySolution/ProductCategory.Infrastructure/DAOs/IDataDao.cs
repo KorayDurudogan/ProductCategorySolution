@@ -21,6 +21,6 @@ namespace ProductCategory.Infrastructure.DAOs
 
         Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> query);
 
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
     }
 }

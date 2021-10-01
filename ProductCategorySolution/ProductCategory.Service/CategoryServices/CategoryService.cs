@@ -66,7 +66,7 @@ namespace ProductCategory.Service.CategoryServices
 
         public async Task<IEnumerable<CategoryResponseDto>> GetAll()
         {
-            var categories = await _dataDao.GetAll();
+            var categories = await _dataDao.GetAllAsync();
             return _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
         }
     }
