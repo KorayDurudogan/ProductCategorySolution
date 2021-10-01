@@ -3,7 +3,7 @@
 ProductCategorySolution contains three projects 🏗️
 * Infrastructure -> Contains models about connection database, cache etc. If we had RabbitMQ, Kafka or other third party app integrations, this project would be the place.
 * Service -> Contains business models where presentation and infrastructure projects meet. This layer consumes all resources from Infrastructure.
-* Presentation -> Contains endpoint where users connects the application. Also holds sensitive configurations of the application.
+* Presentation -> Contains endpoint where users connect the application. Also holds sensitive configurations of the application.
 
 Some features of the solution ✨
 
