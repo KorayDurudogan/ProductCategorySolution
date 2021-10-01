@@ -18,4 +18,11 @@
     {
         public const string HealthcheckEndpoint = "/hc";
     }
+
+    public struct ErrorMessageConstants
+    {
+        public const string General = "Something went wrong, please try again later.";
+        public const string BadRequest = "Your request has failed ! Please check your parameters.";
+        public const string Unauthorized = "You are not allowed to access this resource.";
+    }
 }

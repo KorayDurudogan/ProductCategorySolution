@@ -40,26 +40,23 @@ namespace ProductCategory.Service.ProductServices
 
         public async Task<ProductResponseDto> GetAsync(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentNullException();
+
             string redisKey = $"product-{id}";
 
-            var productFromCache = _redisManager.Get<ProductResponseDto>(redisKey);
-            if (productFromCache != null)
+            var product = _redisManager.Get<ProductResponseDto>(redisKey);
+            if (product == null)
             {
-                return productFromCache;
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(id))
-                    throw new ArgumentNullException();
+                var selectedProductproduct = await _dataDao.GetAsync(id);
+                var productResponseDto = _mapper.Map<ProductResponseDto>(selectedProductproduct);
 
-                var product = await _dataDao.GetAsync(id);
-                var productResponseDto = _mapper.Map<ProductResponseDto>(product);
-
-                productResponseDto.CategoryId = await _categoryService.GetAsync(product.CategoryId);
+                productResponseDto.CategoryId = await _categoryService.GetAsync(selectedProductproduct.CategoryId);
 
                 _redisManager.Add(redisKey, productResponseDto, new TimeSpan(0, 5, 0));
-                return productResponseDto;
+                product = productResponseDto;
             }
+            return product;
         }
 
         public async Task InsertAsync(ProductRequestDto productDto)

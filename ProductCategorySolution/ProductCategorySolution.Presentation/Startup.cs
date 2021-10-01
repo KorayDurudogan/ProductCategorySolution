@@ -19,6 +19,7 @@ using ProductCategory.Service.CategoryServices;
 using ProductCategory.Service.ProductServices;
 using ProductCategory.Service.Profiles;
 using ProductCategory.Services.ProductServices;
+using ProductCategorySolution.Presentation.ExceptionHandling;
 using System.Text;
 
 namespace ProductCategorySolution
@@ -83,6 +84,8 @@ namespace ProductCategorySolution
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductCategorySolution v1"));
             }
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             redisManager.Connect();
 
