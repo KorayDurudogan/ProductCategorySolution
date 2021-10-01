@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ProductCategorySolution.Presentation.ExceptionHandling.Models;
 using System;
@@ -12,11 +13,17 @@ namespace ProductCategorySolution.Presentation.ExceptionHandling.ExceptionHandle
 
         private Exception _exception;
 
-        public AbsExceptionHandler(Exception exception) => _exception = exception;
+        ILogger _logger;
+
+        public AbsExceptionHandler(Exception exception, ILogger logger)
+        {
+            _exception = exception;
+            _logger = logger;
+        }
 
         public virtual async Task HandleAsync(HttpContext context)
         {
-            //Loglama
+            _logger.LogError(_exception, string.Empty);
 
             context.Response.ContentType = "application/json";
 

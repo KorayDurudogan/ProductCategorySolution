@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using ProductCategory.Service;
 using ProductCategorySolution.Presentation.ExceptionHandling.ExceptionHandlers.Base;
 using ProductCategorySolution.Presentation.ExceptionHandling.Models;
@@ -10,7 +11,8 @@ namespace ProductCategorySolution.Presentation.ExceptionHandling.ExceptionHandle
 {
     public class UnauthorizedAccessExceptionHandler : AbsExceptionHandler
     {
-        public UnauthorizedAccessExceptionHandler(Exception exception) : base(exception)
+        public UnauthorizedAccessExceptionHandler(Exception exception, ILogger logger)
+            : base(exception, logger)
         {
         }
 

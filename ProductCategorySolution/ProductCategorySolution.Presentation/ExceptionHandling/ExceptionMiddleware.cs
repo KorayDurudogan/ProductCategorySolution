@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ProductCategorySolution.Presentation.ExceptionHandling.Factory;
 using System;
 using System.Threading.Tasks;
 
@@ -8,7 +9,13 @@ namespace ProductCategorySolution.Presentation.ExceptionHandling
     {
         private readonly RequestDelegate _next;
 
-        public ExceptionMiddleware(RequestDelegate next) => _next = next;
+        private readonly IExceptionHandlerFactory _exceptionHandlerFactory;
+
+        public ExceptionMiddleware(RequestDelegate next, IExceptionHandlerFactory exceptionHandlerFactory)
+        {
+            _next = next;
+            _exceptionHandlerFactory = exceptionHandlerFactory;
+        }
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
@@ -18,7 +25,7 @@ namespace ProductCategorySolution.Presentation.ExceptionHandling
             }
             catch (Exception ex)
             {
-                var handler = ExceptionHandlerFactory.Create(ex);
+                var handler = _exceptionHandlerFactory.Create(ex);
                 await handler.HandleAsync(httpContext);
             }
         }

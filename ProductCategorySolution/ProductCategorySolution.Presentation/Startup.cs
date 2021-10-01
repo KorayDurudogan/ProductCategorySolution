@@ -20,16 +20,14 @@ using ProductCategory.Service.ProductServices;
 using ProductCategory.Service.Profiles;
 using ProductCategory.Services.ProductServices;
 using ProductCategorySolution.Presentation.ExceptionHandling;
+using ProductCategorySolution.Presentation.ExceptionHandling.Factory;
 using System.Text;
 
 namespace ProductCategorySolution
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
@@ -37,7 +35,7 @@ namespace ProductCategorySolution
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks()
-                .AddRedis($"{Configuration.GetSection(DatabaseConstants.RedisEndpoint).Value},abortConnect=false", "Redis", HealthStatus.Degraded, tags: new[] { "redis", "cache" })
+                .AddRedis($"{Configuration.GetSection(DatabaseConstants.RedisEndpoint).Value},abortConnect=false", DatabaseConstants.CacheName, HealthStatus.Degraded, tags: new[] { "redis", "cache" })
                 .AddMongoDb(Configuration.GetConnectionString(DatabaseConstants.DatabaseName), DatabaseConstants.DatabaseName, HealthStatus.Degraded, tags: new[] { "mongo-db", "database" });
 
             services.AddControllers();
@@ -53,6 +51,9 @@ namespace ProductCategorySolution
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IDataDao<Category>, CategoryDao>();
             services.AddScoped<ITokenService, TokenService>();
+
+            services.AddSingleton<IExceptionHandlerFactory, ExceptionHandlerFactory>();
+
             services.AddSingleton<IRedisManager, RedisManager>();
 
             services.AddSingleton<IMongoClient, MongoClient>(sp => new MongoClient(Configuration.GetConnectionString(DatabaseConstants.DatabaseName)));
