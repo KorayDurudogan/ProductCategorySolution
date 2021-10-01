@@ -1,7 +1,10 @@
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
@@ -27,6 +30,10 @@ namespace ProductCategorySolution
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks()
+                .AddRedis($"{Configuration.GetSection("Endpoints:Redis").Value},abortConnect=false", "Redis", HealthStatus.Degraded, tags: new[] { "redis", "cache" })
+                .AddMongoDb(Configuration.GetConnectionString("MongoDb"), "MongoDb", HealthStatus.Degraded, tags: new[] { "mongo-db", "database" });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -65,9 +72,17 @@ namespace ProductCategorySolution
 
             app.UseAuthorization();
 
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = registration => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc");
+                endpoints.MapHealthChecksUI();
             });
         }
     }

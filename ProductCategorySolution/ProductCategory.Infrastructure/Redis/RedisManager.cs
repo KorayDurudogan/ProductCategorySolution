@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
 
@@ -7,6 +8,10 @@ namespace ProductCategory.Infrastructure.Redis
     public class RedisManager : IRedisManager
     {
         ConnectionMultiplexer connectionMultiplexer;
+
+        private readonly string redisEndpoint;
+
+        public RedisManager(IConfiguration configuration) => redisEndpoint = configuration.GetSection("Endpoints:Redis").Value;
 
         public void Add(string key, object value, TimeSpan expireDate)
         {
@@ -19,7 +24,7 @@ namespace ProductCategory.Infrastructure.Redis
             Db.StringSet(key, JsonConvert.SerializeObject(value), expireDate);
         }
 
-        public void Connect() => connectionMultiplexer = ConnectionMultiplexer.Connect("localhost:6379");
+        public void Connect() => connectionMultiplexer = ConnectionMultiplexer.Connect(redisEndpoint);
 
         public T Get<T>(string key)
         {
